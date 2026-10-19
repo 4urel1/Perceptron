@@ -15,5 +15,4 @@ perceptron.o: ./src/perceptron.c ./Include/perceptron.h
 
 
 clean:
-	rm -f *.o
-	rm -f main
+	rm -f ./output/*

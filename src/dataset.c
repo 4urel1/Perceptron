@@ -45,10 +45,9 @@ int nbChampignons()
     return nbChampi;
 }
 
-void loadData(exemple exe)
+int nbDim()
 {
-    exe.n = nbChampignons();
-    printf("%d\n", exe.n);
+    int dim = 0;
     FILE *fo = fopen("../data/champignons.csv", "r");
     char ligne[256];
 
@@ -56,33 +55,31 @@ void loadData(exemple exe)
     {
         printf("Erreur lors de l'ouverture du fichier");
     }
-
-
-    while (fgets(ligne, sizeof(ligne), fo) != NULL)
+    else
     {
-        printf("%s\n", ligne);
+        fgets(ligne, sizeof(ligne), fo);
+        const char *delim = ",";
+
+        char *token = strtok(ligne, delim);
+        while (token != NULL)
+        {
+            dim++;
+        }
     }
-    
-
-
-
-
-
 
     fclose(fo);
+    return dim;
 }
 
-
-int main(){
+int main()
+{
     exemple exemple;
+    exemple.n = nbChampignons();
+    exemple.dim = nbDim();
+    
     creationdataset(exemple);
-    loadData(exemple);
-
-
 
     freedataset(exemple);
-
-
 
     return 0;
 }

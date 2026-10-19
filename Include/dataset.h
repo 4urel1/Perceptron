@@ -16,3 +16,6 @@ void creation();
 
 int nbChampignons();
 // fonction qui va chercher les données dans champignons.csv et compte le nombre de lignes que le fichier a
+
+int nbDim();
+//compte le nombre de colonnes (dim) de champignons.csv
