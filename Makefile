@@ -7,7 +7,7 @@ dataset.o: ./src/dataset.c ./Include/dataset.h
 
 
 testdataset : ./src/dataset.c ./Include/dataset.h
-	gcc -g -Wall -Wextra ./src/dataset.c -c -o ./output/dataset
+	gcc -g -Wall -Wextra ./src/dataset.c -o ./output/dataset
 	chmod a+rwx ./output/dataset
 
 perceptron.o: ./src/perceptron.c ./Include/perceptron.h
