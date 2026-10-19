@@ -19,7 +19,7 @@ void freedataset(exemple exempleAddr){
     free(exempleAddr.exemple);
 }
 
-int nbChampignons(){
+int loadFile(){
     int nbChampi = 0;
     FILE *fo = fopen("champignons.csv", "r");
 
@@ -32,6 +32,7 @@ int nbChampignons(){
 
     while (fgets(ligne, sizeof(ligne), fo) != NULL) {
         nbChampi++;
+        printf("%s", ligne[nbChampi]);
     }
 
 

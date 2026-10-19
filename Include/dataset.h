@@ -11,5 +11,5 @@ typedef struct exemple
 void creation();
 //alloue dynamiquement la mémoire
 
-int nbChampignons();
+int loadFile();
 //fonction qui va chercher les données dans champignons.csv et compte le nombre de lignes que le fichier a
