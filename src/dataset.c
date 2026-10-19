@@ -1,9 +1,25 @@
-#include "../include/dataset.h"
+#include "../Include/dataset.h"
 #include <stdio.h>
 
-void creation();
+void creationdataset(exemple exempleAddr){
+    int ligne = exempleAddr.n;
+    int colonnes = exempleAddr.dim;
 
-int nbChapingnons(){
+    exempleAddr.exemple = malloc(ligne * sizeof(float *));
+
+    for (int i = 0; i < colonnes; i++){
+        exempleAddr.exemple[i] = malloc(colonnes * sizeof(float));
+    }
+}
+
+void freedataset(exemple exempleAddr){
+    for (int i = 0; i < exempleAddr.n; i++){
+        free(exempleAddr.exemple[i]);
+    }
+    free(exempleAddr.exemple);
+}
+
+int nbChampignons(){
     int nbChampi = 0;
     FILE *fo = fopen("champignons.csv", "r");
 
