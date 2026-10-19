@@ -20,3 +20,8 @@ typedef struct dataset
     dataChampignons caracteristiques; //caratéristiques du chapignons
 };
 
+void creation();
+//alloue dynamiquement la mémoire
+
+void nbChapingnons();
+//fonction qui va chercher les données dans champignons.csv et compte le nombre de lignes que le fichier a
