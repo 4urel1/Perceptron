@@ -32,7 +32,7 @@ int loadFile(){
 
     while (fgets(ligne, sizeof(ligne), fo) != NULL) {
         nbChampi++;
-        printf("%s", ligne[nbChampi]);
+        printf("%d", ligne[nbChampi]);
     }
 
 
