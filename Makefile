@@ -1,12 +1,12 @@
-Main: main.c perceptron.o dataset.o
-	gcc -g main.c perceptron.o dataset.o -o main -Wall -Wextra
+Main: ./src/main.c ./output/perceptron.o ./output/dataset.o
+	gcc -g main.c perceptron.o dataset.o -o ./output/main -Wall -Wextra
 
 
-dataset.o: dataset.c dataset.h
-	gcc -g -Wall -Wextra dataset.c -c -o dataset.o
+dataset.o: ./src/dataset.c ./Include/dataset.h
+	gcc -g -Wall -Wextra ./src/dataset.c -c -o ./output/dataset.o
 
-perceptron.o: perceptron.c perceptron.h
-	gcc -g -Wall -Wextra perceptron.c -c -o perceptron.o
+perceptron.o: ./src/perceptron.c ./Include/perceptron.h
+	gcc -g -Wall -Wextra ./src/perceptron.c -c -o ./output/perceptron.o
 
 
 clean:
