@@ -3,13 +3,13 @@
 #include <string.h>
 
 
-typedef struct exemple
+typedef struct data
 {
     /* data */
     int n;           // nb d'exemples
     int dim;         // nombre de caractéristiques
     float **exemple; // caratéristiques du chapignons
-} exemple;
+} data;
 
 void creation();
 // alloue dynamiquement la mémoire
@@ -19,3 +19,9 @@ int nbChampignons();
 
 int nbDim();
 //compte le nombre de colonnes (dim) de champignons.csv
+
+int main();
+//fonction principale du dataset
+
+void remplirDataset(data data);
+//charge les données des csv pour les mettes dans data
