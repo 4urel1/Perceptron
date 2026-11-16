@@ -4,7 +4,7 @@
 data creationdataset(data exempleAddr)
 {
     int ligne = exempleAddr.n;
-    int colonnes = exempleAddr.dim;
+    int colonnes = exempleAddr.dim + 1;
 
     exempleAddr.exemple = malloc(ligne * sizeof(float *));
 
@@ -24,14 +24,15 @@ void freedataset(data exempleAddr)
     free(exempleAddr.exemple);
 }
 
-int nbChampignons()
+int nbLignes(char *chemin)
 {
-    int nbChampi = 0;
-    FILE *fo = fopen("../data/champignons.csv", "r");
+    int nbLigne = 0;
+    FILE *fo = fopen(chemin, "r");
 
     if (fo == NULL)
     {
-        printf("Erreur lors de l'ouverture du fichier");
+        printf("Erreur lors de l'ouverture du fichier dans nbLignes\n");
+        perror(chemin);
         return -1;
     }
 
@@ -39,27 +40,29 @@ int nbChampignons()
 
     while (fgets(ligne, sizeof(ligne), fo) != NULL)
     {
-        nbChampi++;
+        nbLigne++;
     }
 
     fclose(fo);
-    return nbChampi;
+    return nbLigne;
 }
 
-int nbDim()
+int nbDim(char *chemin)
 {
     int dim = 0;
-    FILE *fo = fopen("../data/champignons.csv", "r");
+    FILE *fo = fopen(chemin, "r");
     char ligne[256];
 
     if (fo == NULL)
     {
-        printf("Erreur lors de l'ouverture du fichier");
+        printf("Erreur lors de l'ouverture du fichier dans la fonction nbDim\n");
+        perror(chemin);
+    return -1;
     }
     else
     {
         fgets(ligne, sizeof(ligne), fo);
-        const char *delim = ",";
+        const char *delim = ",\r\n";
 
         char *token = strtok(ligne, delim);
 
@@ -74,47 +77,79 @@ int nbDim()
     return dim;
 }
 
-void remplirDataset(data data)
+void remplirDataset(data *data, char *chemin)
 {
 
-    int ligne = data.n;
-    int colonne = data.dim;
-    FILE *fo = fopen("../data/champignons.csv", "r");
+    int ligne = 0;
+    int colonne = 0;
+    int ligneVide = 0;
+    FILE *fo = fopen(chemin, "r");
     char caracteres[256];
 
     if (fo == NULL)
     {
         printf("Erreur lors de l'ouverture du fichier");
     }
+
     else
     {
-        fgets(caracteres, sizeof(caracteres), fo);
-        const char *delim = ",";
-
-        char *token = strtok(caracteres, delim);
-
-        for (int i = 0; i < ligne; i++)
-        {
-            for (int j = 0; j < colonne; j++)
+        while (fgets(caracteres, sizeof(caracteres), fo) != NULL)
+        { // debut du remplissage.
+            if (caracteres[0] == '\n')
             {
-
-                data.exemple[i][j] = (float)atof(token);
-                token = strtok(NULL, delim);
+                ligneVide++;
             }
+            else
+            {
+                const char *delim = ",\r\n";
+
+                char *token = strtok(caracteres, delim);
+                colonne = 0;
+                while (token != NULL)
+                {
+                    data->exemple[ligne][colonne] = (float)atof(token);
+                    token = strtok(NULL, delim);
+                    colonne++;
+                }
+            }
+            ligne++;
         }
     }
+    fclose(fo);
+    data->n -= ligneVide;
+}
+
+void afficheData(data data){
+    int ligne = data.n;
+    int colonne = data.dim;
+    for(int i = 0; i < ligne; i++){
+        for(int j = 0; j < colonne; j++){
+            printf("%.2f, ", data.exemple[i][j]);
+
+        }
+        printf("%.2f\n", data.exemple[i][colonne]);
+    }
+
+
+
 }
 
 int main(void)
 {
     data data;
-    data.n = nbChampignons();
-    data.dim = nbDim();
+    char *chemin = "data/champignons.csv";
+    data.n = nbLignes(chemin);
+    data.dim = nbDim(chemin) - 1;
+    printf("%d,%d", data.n, data.dim);
 
     if (data.n <= 0 || data.dim <= 0)
         return 1;
 
     data = creationdataset(data);
+
+    remplirDataset(&data, chemin);
+
+    afficheData(data);
 
     freedataset(data);
 
