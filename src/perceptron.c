@@ -8,6 +8,9 @@ struct perceptron creation(int dim){
     p->w = malloc(dim * sizeof(float));
     for (int i=0;i<dim;i++){
         p->w[i]=0;
+        printf("test\n")
+
+        
     }
     p->b = 0;
     p->lr = 0.1;
