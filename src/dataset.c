@@ -114,7 +114,7 @@ if (d == NULL) {
     return NULL;
 }
 /* 6 fermer le fichier et libérer la mémoire allouée par des erreurs; si echec -> libérer la mémoire et retourner NULL */   
-
+if 
 fclose(file);
 dataset_free(d);
 return NULL;
