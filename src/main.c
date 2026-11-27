@@ -27,6 +27,9 @@ int main(void) {
     /* 4. Libération propre de toute la mémoire */
     dataset_free(d);
     perceptron_free(p);
+
+
+    printf("bastos\n");
     return 0;
 }
 
