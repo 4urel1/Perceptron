@@ -50,3 +50,12 @@ float prediction(float *x, perceptron *p)
     }
     return sigmoide(z);
 }
+
+float apprentissage(float *x, *p, float y )
+{
+    for (int j=0; j<p->dim, j++)
+    {
+        p->w[j] = w[j]+ p->lr * (x[dim]-y);
+    }
+    
+}
