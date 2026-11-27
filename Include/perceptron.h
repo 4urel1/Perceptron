@@ -1,3 +1,7 @@
+#ifndef PERCEPTRON_H
+#define PERCEPTRON_H
+
+
 #include <stdio.h>
 
 typedef struct perceptron 
@@ -7,3 +11,8 @@ float *w; //vecteur de poids : tableau de taille dim contenant les poids de chaq
 float b; //biais 
 float lr; //taux d'apprentissage
 } perceptron;
+
+Perceptron *perceptron_create(int dim, double lr);
+void perceptron_free(Perceptron *p);
+
+#endif

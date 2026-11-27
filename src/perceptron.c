@@ -43,3 +43,37 @@ void maj(struct perceptron *p, int label, float x[], int z){
     }
 }
 
+#include "perceptron.h"
+#include <stdlib.h>
+
+Perceptron *perceptron_create(int dim, double lr) {
+    if (dim <= 0 || lr <= 0.0) {
+        return NULL;
+    }
+
+    Perceptron *p = malloc(sizeof(Perceptron));
+    if (p == NULL) {
+        return NULL;
+    }
+
+    p->weights = calloc((size_t)dim, sizeof(double));
+    if (p->weights == NULL) {
+        free(p);
+        return NULL;
+    }
+
+    p->bias = 0.0;
+    p->dim = dim;
+    p->lr = lr;
+
+    return p;
+}
+
+void perceptron_free(Perceptron *p) {
+    if (p == NULL) {
+        return;
+    }
+
+    free(p->weights);
+    free(p);
+}
