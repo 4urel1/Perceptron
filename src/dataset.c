@@ -1,15 +1,18 @@
 #include <stdio.h>
-#include "dataset.h"
+#include "../Include/dataset.h"
 #include <stdlib.h>
 #include <string.h>
 
-Dataset *dataset_create(int n, int dim) {
-    if (n <= 0 || dim <= 0) {
+Dataset *dataset_create(int n, int dim)
+{
+    if (n <= 0 || dim <= 0)
+    {
         return NULL;
     }
 
     Dataset *d = malloc(sizeof(Dataset));
-    if (d == NULL) {
+    if (d == NULL)
+    {
         return NULL;
     }
 
@@ -19,15 +22,19 @@ Dataset *dataset_create(int n, int dim) {
     d->labels = NULL;
 
     d->X = calloc((size_t)n, sizeof(double *));
-    if (d->X == NULL) {
+    if (d->X == NULL)
+    {
         free(d);
         return NULL;
     }
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         d->X[i] = calloc((size_t)dim, sizeof(double));
-        if (d->X[i] == NULL) {
-            for (int j = 0; j < i; j++) {
+        if (d->X[i] == NULL)
+        {
+            for (int j = 0; j < i; j++)
+            {
                 free(d->X[j]);
             }
             free(d->X);
@@ -37,7 +44,8 @@ Dataset *dataset_create(int n, int dim) {
     }
 
     d->labels = calloc((size_t)n, sizeof(int));
-    if (d->labels == NULL) {
+    if (d->labels == NULL)
+    {
         dataset_free(d);
         return NULL;
     }
@@ -45,13 +53,17 @@ Dataset *dataset_create(int n, int dim) {
     return d;
 }
 
-void dataset_free(Dataset *d) {
-    if (d == NULL) {
+void dataset_free(Dataset *d)
+{
+    if (d == NULL)
+    {
         return;
     }
 
-    if (d->X != NULL) {
-        for (int i = 0; i < d->n; i++) {
+    if (d->X != NULL)
+    {
+        for (int i = 0; i < d->n; i++)
+        {
             free(d->X[i]);
         }
         free(d->X);
@@ -62,61 +74,87 @@ void dataset_free(Dataset *d) {
 }
 
 /*etape 2*/
-int count_features(const char *line){
+int count_features(const char *line)
+{
     int compte = 0;
-    while (*line != '\0' && *line != '\n') {
-        if (*line== ',') {
+    while (*line != '\0' && *line != '\n')
+    {
+        if (*line == ',')
+        {
             compte++;
-            
         }
         line++;
     }
     return compte;
 }
-
-Dataset *dataset_load(const char *filename) {
+//    int  dim 
+//      int strtok(line, ",");
+Dataset *dataset_load(const char *filename)
+{
 
     /* 1. ouvrir le fichier ; si fopen retourne NULL -> retourner NULL */
     FILE *file = fopen(filename, "r");
-    if (file == NULL) {
+    if (file == NULL)
+    {
         return NULL;
     }
     /* 2. lire la première ligne avec fgets ; si échec -> libérer la mémoire et retourner NULL */
     char line[1024];
-if (fgets(line, sizeof(line), file) == NULL) {
-    fclose(file);
-    return NULL;
-}
-/* 3. compter le nb de vigurles; si le nombre est égal ou inferieur à 0 -> fermer le fichier et retourner NULL */
-   int dim = count_features(line);
-if (dim <= 0) {
-    fclose(file);
-    return NULL; 
-   
-}
-/* 4. n = compter le nombre de lignes restantes dans le fichier ; si echec -> libérer la mémoire et retourner NULL */
-/* vérifier en relisant le fichier que chaque ligne a le bon nombre de colonnes; si echec -> libérer la mémoire et retourner NULL */
-rewind(file);
-int n = 0;
-while (fgets(line, sizeof(line), file) != NULL) {
-    if (line[0] != '\n' && line[0] != '\0') {
-        n++;
+    if (fgets(line, sizeof(line), file) == NULL)
+    {
+        fclose(file);
+        return NULL;
     }
-}
-if (n == 0) {
-    fclose(file);
+    /* 3. compter le nb de vigurles; si le nombre est égal ou inferieur à 0 -> fermer le fichier et retourner NULL */
+    int dim = count_features(line);
+    if (dim <= 0)
+    {
+        fclose(file);
+        return NULL;
+    }
+    /* 4. n = compter le nombre de lignes restantes dans le fichier ; si echec -> libérer la mémoire et retourner NULL */
+    /* vérifier en relisant le fichier que chaque ligne a le bon nombre de colonnes; si echec -> libérer la mémoire et retourner NULL */
+    rewind(file);
+    int n = 0;
+    while (fgets(line, sizeof(line), file) != NULL)
+    {
+        if (line[0] != '\n' && line[0] != '\0')
+        {
+            n++;
+        }
+    }
+    if (n == 0)
+    {
+        fclose(file);
+        return NULL;
+    }
+    /* 5. créer le dataset avec les dimensions (n et dim); si echec -> libérer la mémoire et retourner NULL */
+    Dataset *d = dataset_create(n, dim);
+    if (d == NULL)
+    {
+        fclose(file);
+        return NULL;
+    }
+
+    /*  relire le fichier pour remplir caractéristiques et labels, en vérifiant que chaque ligne
+    a bien le nombre de colonnes attendu*/
+    rewind(file);
+    int count = 0;
+    while (fgets(file, sizof(file), line) != NULL)
+    {
+        if (line[0] != '\n' || line[0] != '\0')
+        {
+            count = ++;
+            line = ++;
+        }
+        if (!(line[0] != '\n' || line[0] != '\0'))
+        {
+            continue;
+        }
+    }
+    /* 6 fermer le fichier et libérer la mémoire allouée par des erreurs; si echec -> libérer la mémoire et retourner NULL */
+    if fclose (file)
+        ;
+    dataset_free(d);
     return NULL;
 }
-/* 5. créer le dataset avec les dimensions (n et dim); si echec -> libérer la mémoire et retourner NULL */
-Dataset *d = dataset_create(n, dim);
-if (d == NULL) {
-    fclose(file);
-    return NULL;
-}
-/* 6 fermer le fichier et libérer la mémoire allouée par des erreurs; si echec -> libérer la mémoire et retourner NULL */   
-if 
-fclose(file);
-dataset_free(d);
-return NULL;
-}
- 
